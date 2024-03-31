@@ -1,0 +1,34 @@
+-- Criar o banco de dados
+CREATE DATABASE IF NOT EXISTS Views_students;
+
+-- Definir o banco de dados correto
+USE DATABASE Views_students;
+
+-- Criar o schema Students_semantic
+CREATE SCHEMA IF NOT EXISTS Students_semantic;
+
+-- Criar o schema Students_staging
+CREATE SCHEMA IF NOT EXISTS Students_staging;
+
+-- Definir o schema correto
+USE SCHEMA Students_staging;
+
+-- Criar a tabela final_merged no schema Students_staging
+CREATE TABLE IF NOT EXISTS final_merged (
+   student_id VARCHAR(10),
+   name VARCHAR(50),
+   math INT,
+   science INT,
+   history INT,
+   english INT,
+   missed_days INT
+);
+
+-- Definir o schema correto
+USE SCHEMA Students_semantic;
+
+-- Criar a visualização w_students no schema Students_semantic.Views_students
+CREATE OR REPLACE VIEW w_students AS
+SELECT *
+FROM Students_staging.final_merged
+WHERE math > 90;
